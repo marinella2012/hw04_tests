@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Записи сообщества {{ group.title }}{% endblock %}
+{% block header %}{{ group.title }}{% endblock %}
+{% block content %}
+<h1>{{ group.title }}</h1>
+<p>{{ group.description|linebreaksbr }}</p>
+{% comment ":)" %}
+ {% for post in page %}
+ {% endfor %}
+{% endcomment %}
+{% include "include/post_list.html" %}
+{% endblock %}
