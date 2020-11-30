@@ -41,7 +41,6 @@ class StaticURLTests(TestCase):
             title='Заголовок',
             description='Ж'*100,
             slug='test-slug',
-            id=1,
         )
         cls.user = User.objects.create(username='Marina')
         cls.post = Post.objects.create(
@@ -51,7 +50,8 @@ class StaticURLTests(TestCase):
         )
 
     def test_pages_url_exists_at_desired_location(self):
-        """Проверка доступности /group/test-slug/ и главной страницы любому пользователю."""   
+        """Проверка доступности /group/test-slug/
+        и главной страницы любому пользователю."""
         templates_page_names = {
             'index.html': reverse('index'),
             'group.html': (
@@ -64,10 +64,11 @@ class StaticURLTests(TestCase):
                 self.assertEqual(response.status_code, 200)
 
     def test_urls_exists_at_desired_location_authorized(self):
-        """Страницы /new/, /username/, /<username>/<post_id>/ доступны авторизованному пользователю."""
+        """Страницы /new/, /username/, /<username>/<post_id>/
+        доступны авторизованному пользователю."""
         templates_page_names = {
             'new.html': reverse('new_post'),
-            'profile.html':(
+            'profile.html': (
                 reverse(
                     'profile',
                     kwargs={
@@ -75,7 +76,7 @@ class StaticURLTests(TestCase):
                     }
                 )
             ),
-            'post.html':(
+            'post.html': (
                 reverse(
                     'post',
                     kwargs={
@@ -86,14 +87,15 @@ class StaticURLTests(TestCase):
             )
         }
         for template, reverse_name in templates_page_names.items():
-            with self.subTest(template=template):        
+            with self.subTest(template=template):
                 response = self.authorized_client.get(reverse_name)
                 self.assertEqual(response.status_code, 200)
 
     def test_post_edit_url_exists_at_desired_location_authorized(self):
-        """Проверяем доступность страницы /<username>/<post_id>/edit/ пользователям."""
+        """Проверяем доступность страницы
+        /<username>/<post_id>/edit/ пользователям."""
         template_page_names = {
-            'post_edit.html':(
+            'post_edit.html': (
                 reverse(
                     'post_edit',
                     kwargs={
@@ -104,7 +106,7 @@ class StaticURLTests(TestCase):
             )
         }
         for template, reverse_name in template_page_names.items():
-            with self.subTest(template=template):        
+            with self.subTest(template=template):
                 response_auth = self.authorized_client.get(reverse_name)
                 response_guest = self.guest_client.get(reverse_name)
                 self.assertEqual(response_auth.status_code, 200)
@@ -113,7 +115,7 @@ class StaticURLTests(TestCase):
     def test_post_edit_url_exists_at_desired_location_author(self):
         """Страница /<username>/<post_id>/edit/ доступна автору поста."""
         template_page_names = {
-            'post_edit.html':(
+            'post_edit.html': (
                 reverse(
                     'post_edit',
                     kwargs={
@@ -124,15 +126,15 @@ class StaticURLTests(TestCase):
             )
         }
         for template, reverse_name in template_page_names.items():
-            with self.subTest(template=template):        
+            with self.subTest(template=template):
                 response_auth = self.authorized_client.get(reverse_name)
-                self.assertEqual(response_auth.status_code, 200)         
+                self.assertEqual(response_auth.status_code, 200)
 
     def test_urlы_redirect_anonymous_on_admin_login(self):
-        """Страницы /new/ и /<username>/<post_id>/edit/ перенаправят анонимного пользователя.
-        """
+        """Страницы /new/ и /<username>/<post_id>/edit/
+        перенаправят анонимного пользователя."""
         template_page_names = {
-            'post_edit.html':(
+            'post_edit.html': (
                 reverse(
                     'post_edit',
                     kwargs={
@@ -144,9 +146,9 @@ class StaticURLTests(TestCase):
             'new_post.html': reverse('new_post')
         }
         for template, reverse_name in template_page_names.items():
-            with self.subTest(template=template):   
+            with self.subTest(template=template):
                 response = self.guest_client.get(reverse_name)
-                self.assertEqual(response.status_code, 302)    
+                self.assertEqual(response.status_code, 302)
 
     def test_urls_uses_correct_template(self):
         """URL-адрес использует соответствующий шаблон."""

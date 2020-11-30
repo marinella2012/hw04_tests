@@ -7,8 +7,8 @@ from .models import Group, Post, User
 
 
 def index(request):
-    post_list = Post.objects.all()
-    paginator = Paginator(post_list, 10)
+    posts = Post.objects.all()
+    paginator = Paginator(posts, 10)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
     return render(
@@ -17,21 +17,23 @@ def index(request):
          {'page': page, 'paginator': paginator}
      )
 
+
 def group_posts(request, slug):
     group = get_object_or_404(Group, slug=slug)
-    posts_list = group.posts.all()
-    paginator = Paginator(posts_list, 10)
+    posts = group.posts.all()
+    paginator = Paginator(posts, 10)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
     return render(
-         request,
-         'group.html',
+        request,
+        'group.html',
         {
             'page': page,
             'paginator': paginator,
             'group': group,
         }
-     )     
+    )
+
 
 @login_required()
 def new_post(request):
@@ -44,10 +46,11 @@ def new_post(request):
     form = PostForm()
     return render(request, 'new_post.html', {'form': form})
 
+
 def profile(request, username):
     user1 = get_object_or_404(User, username=username)
-    post_list = user1.posts.all()
-    paginator = Paginator(post_list, 10)
+    posts = user1.posts.all()
+    paginator = Paginator(posts, 10)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
     return render(
@@ -60,9 +63,9 @@ def profile(request, username):
         }
     )
 
+
 def post_view(request, username, post_id):
-    post_list = Post.objects.filter(author__username=username)
-    post = get_object_or_404(post_list, id=post_id)
+    post = get_object_or_404(Post, id=post_id, author__username=username)
     return render(
         request,
         'post.html',
@@ -72,10 +75,11 @@ def post_view(request, username, post_id):
         }
     )
 
+
 @login_required()
 def post_edit(request, username, post_id):
     user = get_object_or_404(User, username=username)
-    post = user.posts.get(id=post_id)
+    post = get_object_or_404(Post, id=post_id, author__username=username)
     if request.user != user:
         return redirect('post', username=username, post_id=post_id)
     form = PostForm(request.POST or None, instance=post)

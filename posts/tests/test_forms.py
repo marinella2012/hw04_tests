@@ -14,8 +14,7 @@ class StaticURLTests(TestCase):
             title='Заголовок',
             description='123',
             slug='test-slug',
-            id=1,
-        )        
+        )
         cls.user = User.objects.create(username='Marina')
         cls.post = Post.objects.create(
             author=cls.user,
@@ -40,11 +39,12 @@ class StaticURLTests(TestCase):
             follow=True
         )
         self.assertRedirects(response, reverse('index'))
-        self.assertEqual(Post.objects.count(), posts_count+1)
+        self.assertEqual(Post.objects.count(), posts_count + 1)
         self.assertEqual(response.status_code, 200)
 
     def test_edit_post(self):
-        """Проверяем форму редактирования записи и сохранения ее в базе данных"""
+        """Проверяем форму редактирования записи и
+        сохранения ее в базе данных"""
         form_data = {
             'group': self.group.id,
             'text': self.post.text,
@@ -53,8 +53,8 @@ class StaticURLTests(TestCase):
             reverse(
                 'post_edit',
                 kwargs={
-                'username': self.user.username,
-                'post_id': self.post.id
+                    'username': self.user.username,
+                    'post_id': self.post.id
                 }
             ),
             data=form_data,
@@ -63,7 +63,7 @@ class StaticURLTests(TestCase):
         with self.subTest(
             msg='нет переадресации',
             code=response.status_code
-        ):        
+        ):
             self.assertRedirects(
                 response,
                 reverse(

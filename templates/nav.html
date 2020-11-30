@@ -1,5 +1,5 @@
 <nav class="navbar fixed-top navbar-light bg-dark text-white" style="background-color: #FFCC99; ">
-    <a class="navbar-brand text-white" href="/"><span style="color:red">Ya</span>tube</a>
+    <a class="navbar-brand text-white" href="{% url 'index' %}"><span style="color:red">Ya</span>tube</a>
     <nav class="my-2 my-md-0 mr-md-3">
         {% if user.is_authenticated %}
         Пользователь: <a class="p-2 text-white badge-info" href="{% url 'profile' user.username %}">

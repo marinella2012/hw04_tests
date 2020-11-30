@@ -7,7 +7,6 @@ class GroupModelTest(TestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        # Создаём тестовую группу в БД
         cls.group = Group.objects.create(
             title='Заголовок',
             description='Ж'*100,
@@ -33,20 +32,23 @@ class GroupModelTest(TestCase):
         group = GroupModelTest.group
         field_help_texts = {
             'title': 'Дайте короткое название группы',
-            'slug': ('Укажите адрес для страницы группы. Используйте только '
-                   'латиницу, цифры, дефисы и знаки подчёркивания'),
+            'slug': (
+                'Укажите адрес для страницы группы. Используйте только '
+                'латиницу, цифры, дефисы и знаки подчёркивания'
+            ),
             'description': 'Дайте короткое описание группы',
         }
         for value, expected in field_help_texts.items():
             with self.subTest(value=value):
                 self.assertEqual(
-                    group._meta.get_field(value).help_text, expected)                      
+                    group._meta.get_field(value).help_text, expected)
 
     def test_object_name_is_title_fild(self):
         """В поле __str__  объекта group записано значение поля group.title."""
         group = GroupModelTest.group
         expected_object_name = group.title
-        self.assertEquals(expected_object_name, str(group))        
+        self.assertEquals(expected_object_name, str(group))
+
 
 class PostModelTest(TestCase):
     @classmethod

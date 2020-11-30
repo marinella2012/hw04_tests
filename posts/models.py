@@ -7,7 +7,7 @@ User = get_user_model()
 class Group(models.Model):
     title = models.CharField(
         'Название группы',
-        help_text= 'Дайте короткое название группы',
+        help_text='Дайте короткое название группы',
         max_length=200
     )
     slug = models.SlugField(
